@@ -5,7 +5,7 @@ int main() {
 
 	Board TicTacBoard;
 
-	TicTacBoard.CreateBoard();
+	TicTacBoard.Run();
 
 	return 0;
 }
