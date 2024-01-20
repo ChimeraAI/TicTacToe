@@ -20,9 +20,15 @@ using std::endl;
 
 class Board
 {
-private:
+protected:
 	
 	std::vector<int> open_positions{0,1,2,3,4,5,6,7,8}; // Continue coding here to update positions that are availiable
+
+	int occupiedPosition[3][3] = {
+		{0, 1, 2},
+		{3, 4, 5},
+		{6, 7, 8}
+	};
 
 	char board[3][3] = { 
 		{BLANK_MARKER,BLANK_MARKER,BLANK_MARKER},
@@ -30,6 +36,20 @@ private:
 		{BLANK_MARKER,BLANK_MARKER,BLANK_MARKER}
 	};
 
+	// Define winning combinations using integers
+	std::vector<std::vector<int>> winningPositions = {
+		{0, 1, 2}, // Row 1
+		{3, 4, 5}, // Row 2
+		{6, 7, 8}, // Row 3
+		{0, 3, 6}, // Column 1
+		{1, 4, 7}, // Column 2
+		{2, 5, 8}, // Column 3
+		{0, 4, 8}, // Diagonal 1
+		{2, 4, 6}  // Diagonal 2
+	};
+
+
+	/*
 	std::vector<std::vector<std::pair<int, int>>> winning_moves{
 		// Diagonal
 		{ std::make_pair(0, 0), std::make_pair(1, 1), std::make_pair(2, 2) },
@@ -46,19 +66,22 @@ private:
 		{ std::make_pair(2, 0), std::make_pair(2, 1), std::make_pair(2, 2) }
 
 	};
+	*/
 
 public:
 	Board();
 	~Board();
 
+	const char getBoard();
+ 
 	void CreateHeader();
 	void CreateBoard();
 	void BeginGame();
 
 	std::pair<int,bool> CheckGameState();
 	bool IsBoardFull();
-	bool IsGameWon();
-	bool IsGameLoss();
+	bool IsGameWon(char player);
+	bool IsGameLoss(char player);
 
 	void UpdateMove();
 
@@ -80,5 +103,7 @@ public:
 	void PrintBoard();
 
 	void RefreshScreen();
+
+	void RestartGame();
 };
 
