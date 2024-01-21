@@ -1,11 +1,22 @@
 #pragma once
-#include "Board.h"
+#include <iostream>
+#include "Constant.h"
 
-class AI_Engine : public Board
-{
+using std::cin;
+using std::cout;
+using std::endl;
+
+class AI_Engine {
 private:
 public:
-	int minimax(char player, int depth);
-	std::pair<int,int> getBestMove();
+	AI_Engine();
+	~AI_Engine();
+
+	int minimax(char(board)[3][3], char player, int depth);
+	std::pair<int, int> getBestMove(char(board)[3][3]);
+
+	bool IsBoardFull(char(board)[3][3]);
+	bool IsGameWon(char(board)[3][3], char player);
+
 };
 

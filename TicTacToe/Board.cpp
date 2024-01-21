@@ -27,8 +27,8 @@ void Board::PrintBoard() {
 
 void Board::TestFunc() {
 
-	int a = this->occupiedPosition[2][2];
-	cout << a << endl;
+	//int a = this->occupiedPosition[2][2];
+	//cout << a << endl;
 /*
 	std::pair<int, int> playerMove = this->GetPlayerMove();
 	this->board[playerMove.first][playerMove.second] = PLAYER_MARKER;
@@ -44,12 +44,9 @@ void Board::TestFunc() {
 }
 
 void Board::Run() {
-	this->TestFunc();
-/*
 	this->CreateHeader();
 	this->CreateBoard();
 	this->BeginGame();
-*/
 }
 
 void Board::BeginGame() {
@@ -91,43 +88,69 @@ void Board::RestartGame() {
 }
 
 std::pair<int,bool> Board::CheckGameState() {
-	if (this->IsGameWon(PLAYER_MARKER)) {
+	if (this->IsGameWon(this->board, PLAYER_MARKER)) {
 		return std::make_pair(WIN, true);
 	}
-	if (this->IsGameLoss(PLAYER_MARKER)) {
+	if (this->IsGameLoss(this->board, PLAYER_MARKER)) {
 		return std::make_pair(LOSS, true);
 	}
-	if (this->IsBoardFull()) {
+	if (this->IsBoardFull(this->board)) {
 		return std::make_pair(DRAW,true);
 	}
 	return std::make_pair(INPROGESS, false);
 }
 
-bool Board::IsGameWon(char player) {
+bool Board::IsGameWon(char(&board)[3][3], char player) {
 	// Check rows and columns
 	for (int i = 0; i < 3; ++i) {
-		if ((this->board[i][0] == player && this->board[i][1] == player && this->board[i][2] == player) ||
-			(this->board[0][i] == player && this->board[1][i] == player && this->board[2][i] == player)) {
+		if ((board[i][0] == player && board[i][1] == player && board[i][2] == player) ||
+			(board[0][i] == player && board[1][i] == player && board[2][i] == player)) {
 			cout << "You Won!" << endl;
 			return true; // Win in row or column
 		}
 	}
 
 	// Check diagonals
-	if ((this->board[0][0] == player && this->board[1][1] == player && this->board[2][2] == player) ||
-		(this->board[0][2] == player && this->board[1][1] == player && this->board[2][0] == player)) {
+	if ((board[0][0] == player && board[1][1] == player && board[2][2] == player) ||
+		(board[0][2] == player && board[1][1] == player && board[2][0] == player)) {
 		cout << "You Won!" << endl;
 		return true; // Win in diagonal
 	}
 	return false;
 }
 
-bool Board::IsGameLoss(char player) {
+bool Board::IsGameLoss(char(&board)[3][3], char player) {
+	// Check rows and columns for the opponent (not player)
+	char opponent = (player == PLAYER_MARKER) ? AI_MARKER : PLAYER_MARKER;
+	for (int i = 0; i < 3; ++i) {
+		if ((board[i][0] == opponent && board[i][1] == opponent && board[i][2] == opponent) ||
+			(board[0][i] == opponent && board[1][i] == opponent && board[2][i] == opponent)) {
+			cout << "You Loss!" << endl;
+			return true; // Loss in row or column for the opponent
+		}
+	}
+
+	// Check diagonals for the opponent
+	if ((board[0][0] == opponent && board[1][1] == opponent && board[2][2] == opponent) ||
+		(board[0][2] == opponent && board[1][1] == opponent && board[2][0] == opponent)) {
+		cout << "You Loss!" << endl;
+		return true; // Loss in diagonal for the opponent
+	}
+
 	return false;
 }
 
-bool Board::IsBoardFull() {
-	return false;
+bool Board::IsBoardFull(char(&board)[3][3]) {
+	// Check if the board is full (no BLANK_MARKER left)
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			if (board[i][j] == BLANK_MARKER) {
+				return false; // Board is not full
+			}
+		}
+	}
+	cout << "Tie!" << endl;
+	return true; // Board is full
 }
 
 void Board::RefreshScreen() {
@@ -140,6 +163,7 @@ void Board::UpdateMove() {
 	std::pair<int, int> playerMove = this->GetPlayerMove();
 	if (this->IsLegalMove(playerMove.first, playerMove.second)) {
 		this->PlayerMakeMove(playerMove.first, playerMove.second);
+		this->AIMakeMove();
 		this->RefreshScreen();
 	}
 	else {
@@ -169,13 +193,12 @@ std::pair<int, int> Board::GetPlayerMove() {
 
 void Board::PlayerMakeMove(int row, int col) {
 	this->board[row][col] = PLAYER_MARKER;
-	this->occupiedPosition[row][col] = PLAYER_MARKER;
 }
 
 void Board::AIMakeMove() {
-	// Check Player positions to block winning positions
+	std::pair<int, int> bestMoves = this->aiInstance.getBestMove(this->board);
+	this->board[bestMoves.first][bestMoves.second] = AI_MARKER;
 
-	// Make move to win
 }
 
 bool Board::IsPositionOccupied(std::pair<int, int> pos) {
