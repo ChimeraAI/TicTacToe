@@ -4,7 +4,7 @@ AI_Engine::AI_Engine() {}
 
 AI_Engine::~AI_Engine() {}
 
-int AI_Engine::minimax(char(board)[3][3], char player, int depth) {
+int AI_Engine::minimax(char(board)[3][3], char player) {
     if (IsGameWon(board, PLAYER_MARKER)) {
         return -1;
     } else if (IsGameWon(board, AI_MARKER)) {
@@ -20,16 +20,16 @@ int AI_Engine::minimax(char(board)[3][3], char player, int depth) {
         for (int j = 0; j < 3; j++) {
             if (board[i][j] == BLANK_MARKER) {
                 board[i][j] = player;
-                score = minimax(board, (player == AI_MARKER) ? PLAYER_MARKER : AI_MARKER, depth + 1);
+                score = minimax(board, (player == AI_MARKER) ? PLAYER_MARKER : AI_MARKER);
                 board[i][j] = BLANK_MARKER;
             }
             
-            if ((player == PLAYER_MARKER && score > bestScore) || (player == AI_MARKER && score < bestScore)) {
+            if ((player == PLAYER_MARKER && score < bestScore) || (player == AI_MARKER && score > bestScore)) {
                 bestScore = score;
             }
         }
     }
-    return bestScore - depth;
+    return bestScore;
 }
 
 
@@ -43,7 +43,7 @@ std::pair<int,int> AI_Engine::getBestMove(char(board)[3][3]) {
 		for (int j = 0; j < 3; j++) {
 			if (board[i][j] == BLANK_MARKER) {
 				board[i][j] = AI_MARKER;
-				score = this->minimax(board, PLAYER_MARKER, 0);
+				score = this->minimax(board, PLAYER_MARKER);
 				board[i][j] = BLANK_MARKER;
 			}
 

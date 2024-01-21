@@ -12,7 +12,7 @@ public:
 	AI_Engine();
 	~AI_Engine();
 
-	int minimax(char(board)[3][3], char player, int depth);
+	int minimax(char(board)[3][3], char player);
 	std::pair<int, int> getBestMove(char(board)[3][3]);
 
 	bool IsBoardFull(char(board)[3][3]);
