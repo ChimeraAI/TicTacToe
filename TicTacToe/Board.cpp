@@ -25,24 +25,6 @@ void Board::PrintBoard() {
 	}
 }
 
-void Board::TestFunc() {
-
-	//int a = this->occupiedPosition[2][2];
-	//cout << a << endl;
-/*
-	std::pair<int, int> playerMove = this->GetPlayerMove();
-	this->board[playerMove.first][playerMove.second] = PLAYER_MARKER;
-
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < 3; ++j) {
-			cout << this->board[i][j] << ' ';
-		}
-		cout << endl;
-	}
-*/
-
-}
-
 void Board::Run() {
 	this->CreateHeader();
 	this->CreateBoard();
