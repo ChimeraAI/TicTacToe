@@ -1,14 +1,18 @@
 #include "Board.h"
 
+// Constructor
 Board::Board() {}
 
+// Destructor
 Board::~Board() {}
 
+// Function to create header for the game
 void Board::CreateHeader() {
 	cout << "Tic Tac Toe " << endl;
 	cout << "Player = X  AI Computer = O" << endl;
 }
 
+// Function to initialize the board
 void Board::CreateBoard() {
 	cout << endl;
 	cout << this->board[0][0] << " " << this->board[0][1] << " " << this->board[0][2] << endl;
@@ -16,6 +20,7 @@ void Board::CreateBoard() {
 	cout << this->board[2][0] << " " << this->board[2][1] << " " << this->board[2][2] << endl;
 }
 
+// Function to print the board
 void Board::PrintBoard() {
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 3; ++j) {
@@ -25,12 +30,14 @@ void Board::PrintBoard() {
 	}
 }
 
+// Function to run the game
 void Board::Run() {
 	this->CreateHeader();
 	this->CreateBoard();
 	this->BeginGame();
 }
 
+// Function to begin the game
 void Board::BeginGame() {
 	bool status = true;
 	while (status) {
@@ -41,6 +48,7 @@ void Board::BeginGame() {
 	}
 }
 
+// Function to determine if play again
 bool Board::PlayAgain() {
 	char decision;
 	bool booleanDecision = false;
@@ -57,6 +65,7 @@ bool Board::PlayAgain() {
 	return booleanDecision;
 }
 
+// Function to restart the game
 void Board::RestartGame() {
 	this->ClearTerminal();
 	this->CreateHeader();
@@ -69,6 +78,7 @@ void Board::RestartGame() {
 	this->PrintBoard();
 }
 
+// Function to check the state of the game
 std::pair<int,bool> Board::CheckGameState() {
 	if (this->IsGameWon(this->board, PLAYER_MARKER)) {
 		return std::make_pair(WIN, true);
@@ -82,6 +92,7 @@ std::pair<int,bool> Board::CheckGameState() {
 	return std::make_pair(INPROGESS, false);
 }
 
+// Function to check if game is won
 bool Board::IsGameWon(char(&board)[3][3], char player) {
 	// Check rows and columns
 	for (int i = 0; i < 3; ++i) {
@@ -101,6 +112,7 @@ bool Board::IsGameWon(char(&board)[3][3], char player) {
 	return false;
 }
 
+// Function to check if game is lost
 bool Board::IsGameLoss(char(&board)[3][3], char player) {
 	// Check rows and columns for the opponent (not player)
 	char opponent = (player == PLAYER_MARKER) ? AI_MARKER : PLAYER_MARKER;
@@ -122,6 +134,7 @@ bool Board::IsGameLoss(char(&board)[3][3], char player) {
 	return false;
 }
 
+// Function to check if board is full
 bool Board::IsBoardFull(char(&board)[3][3]) {
 	// Check if the board is full (no BLANK_MARKER left)
 	for (int i = 0; i < 3; ++i) {
@@ -135,12 +148,14 @@ bool Board::IsBoardFull(char(&board)[3][3]) {
 	return true; // Board is full
 }
 
+// Function to refresh the board displayed on the terminal
 void Board::RefreshScreen() {
 	this->ClearTerminal();
 	this->CreateHeader();
 	this->PrintBoard();
 }
 
+// Function to update the move
 void Board::UpdateMove() {
 	std::pair<int, int> playerMove = this->GetPlayerMove();
 	if (this->IsLegalMove(playerMove.first, playerMove.second)) {
@@ -155,6 +170,7 @@ void Board::UpdateMove() {
 	}
 }
 
+// Check if player move is legal
 bool Board::IsLegalMove(int row, int col) {
 	if (this->board[row][col] == BLANK_MARKER) {
 		return true;
@@ -162,6 +178,7 @@ bool Board::IsLegalMove(int row, int col) {
 	return false;
 }
 
+// Function to get the player's desired move
 std::pair<int, int> Board::GetPlayerMove() {
 	int row, col;
 	cout << "Row position: ";
@@ -173,20 +190,24 @@ std::pair<int, int> Board::GetPlayerMove() {
 	return std::make_pair(row, col);
 }
 
+// Function to make the move
 void Board::PlayerMakeMove(int row, int col) {
 	this->board[row][col] = PLAYER_MARKER;
 }
 
+// Function for AI to make moves
 void Board::AIMakeMove() {
 	std::pair<int, int> bestMoves = this->aiInstance.getBestMove(this->board);
 	this->board[bestMoves.first][bestMoves.second] = AI_MARKER;
 
 }
 
+// Function to check is the position is occupired
 bool Board::IsPositionOccupied(std::pair<int, int> pos) {
 	return false;
 }
 
+// Function to clear the terminal
 void Board::ClearTerminal() {
 	// Clearing the terminal
 	#ifdef _WIN32

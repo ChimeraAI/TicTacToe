@@ -94,6 +94,6 @@ public:
 
 	// Function to check if targeted player won the game
 	bool IsGameWon(char(&board)[3][3], char player);
-
+	bool IsGameLoss(char(&board)[3][3], char player);
 };
 

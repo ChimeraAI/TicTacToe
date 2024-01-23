@@ -1,3 +1,7 @@
+/*
+Contains predefined marcos to be used by multiple classes
+*/
+
 #pragma once
 
 #define PLAYER_MARKER 'X'
