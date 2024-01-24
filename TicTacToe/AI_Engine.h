@@ -8,6 +8,8 @@ functions to determine the best move for the AI, and checks for game-winning con
 
 // Include necessary header files
 #include <iostream>
+#include <climits>
+
 // Contains macros
 #include "Constant.h"
 
